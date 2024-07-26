@@ -16,6 +16,12 @@ import Container from '../components/Container';
 import Body from '../components/Body';
 import Input from '../components/Input';
 
+import {
+  insertGasto,
+  updateGasto,
+  deleteGasto,
+} from '../services/GastosServicesDB';
+
 import { useNavigation } from '@react-navigation/native';
 
 const Abastecimento = ({ route }) => {
@@ -31,34 +37,49 @@ const Abastecimento = ({ route }) => {
   const [odometro, setOdometro] = useState(null);
   const [data, setData] = useState(moment(new Date()).format('DD/MM/YYYY'));
 
-  useEffect(() =>{
-    if(item){
-      setTipo(item.tipo == 0? 'gas': 'eta');
+  useEffect(() => {
+    if (item) {
+      setTipo(item.tipo == 0 ? 'gas' : 'eta');
       setData(item.data);
       setPreco(item.preco.toFixed(2));
       setValor(item.valor.toFixed(2));
       setOdometro(item.odometro.toFixed(0));
-
     }
   }, [item]);
 
   const handleSalvar = () => {
-    console.log('Salvar');
+    if (item) {
+      updateGasto({
+        tipo: tipo == 'gas' ? 0 : 1,
+        data: data,
+        preco: preco,
+        valor: valor,
+        odometro: odometro,
+        id: item.id,
+      }).then();
+    } else {
+      insertGasto({
+        tipo: tipo == 'gas' ? 0 : 1,
+        data: data,
+        preco: preco,
+        valor: valor,
+        odometro: odometro,
+      }).then();
+    }
+
+    navigation.goBack();
   };
 
   const handleExcluir = () => {
-    console.log('Exluir');
+    deleteGasto(item.id).then();
+    navigation.goBack();
   };
 
   return (
     <Container>
       <Header title={'Abastecimento'} goBack={() => navigation.goBack()}>
         <Appbar.Action icon="check" onPress={handleSalvar} />
-        {
-          item && 
-          <Appbar.Action icon="trash-can" onPress={handleExcluir} />
-        }
-        
+        {item && <Appbar.Action icon="trash-can" onPress={handleExcluir} />}
       </Header>
 
       <Body>
