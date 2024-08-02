@@ -3,7 +3,8 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "expo": "^51.0.22",
-    "react-native": "^0.74.3"
+    "react-native": "^0.74.3",
+    "react-native-paper": "^5.12.5"
   },
   "devDependencies": {
     "metro": "^0.80.9"

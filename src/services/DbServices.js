@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const Database = {
+export const Database = {
   getConnection: () => {
     
     const db = SQLite.openDatabase('fuel_manager.db');
@@ -11,7 +11,7 @@ const Database = {
       );
     });
 
-    const ExecuteQuery = (sql, params = []) => {
+    const ExecuteQuery = (sql, params = []) =>
       new Promise((resolve, reject) => {
         db.transaction((trans) => {
           trans.executeSql(
@@ -26,7 +26,6 @@ const Database = {
           );
         });
       });
-    };
 
     return ExecuteQuery;
   },
